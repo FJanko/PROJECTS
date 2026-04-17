@@ -1,0 +1,17 @@
+import urllib.request
+
+bi_url = "https://markets.businessinsider.com/commodities/gold-price"
+
+def ziskej_cenu_zlata(url):
+    html = urllib.request.urlopen(url, timeout=30).read().decode("utf-8", errors="replace")
+    tag = "price-section__current-value"
+    p = html.find(tag)
+    if p == -1:
+        return "Cena nenalezena"
+    p = html.find(">", p) + 1
+    q = html.find("<", p)
+    cena_text = html[p:q].strip().replace(",", "")
+    return float(cena_text)
+
+cena = ziskej_cenu_zlata(bi_url)
+print(cena)
